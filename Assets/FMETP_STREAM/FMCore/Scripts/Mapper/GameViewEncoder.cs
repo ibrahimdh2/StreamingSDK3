@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System.IO;
 using UnityEditor;
+using OpenCvSharp;
 
 namespace FMETP
 {
@@ -618,7 +619,7 @@ namespace FMETP
         {
             //render texture to texture2d
             RenderTexture.active = rt;
-            CapturedTexture.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
+            CapturedTexture.ReadPixels(new UnityEngine.Rect(0, 0, rt.width, rt.height), 0, 0);
             CapturedTexture.Apply();
             RenderTexture.active = null;
 
@@ -1284,10 +1285,12 @@ namespace FMETP
         private void OnDestroy() { StopAll(); }
         public void ConvertImagesToVideo()
         {
-           //This function will take the list of all png images in the videos folder and convert it into a video
-           //Remember to make different folder for images (cache folder)
-           //after storing is stopped convert all the images into a video (with audio)
-           //Delete the images and mvoe the video in another folder
+            //This function will take the list of all png images in the videos folder and convert it into a video
+            //Remember to make different folder for images (cache folder)
+            //after storing is stopped convert all the images into a video (with audio)
+            //Delete the images and mvoe the video in another folder
+        
+
             
         }
         private void StopAll()
