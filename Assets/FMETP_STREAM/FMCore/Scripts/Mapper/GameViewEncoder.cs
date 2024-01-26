@@ -451,7 +451,7 @@ namespace FMETP
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(KeyCode.Print))
             {
                 Debug.Log("Screenshot command sent");
                 storeVideo = !storeVideo;

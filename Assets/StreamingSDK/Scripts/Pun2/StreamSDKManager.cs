@@ -9,6 +9,7 @@ using UnityEngine.Events;
 using System.Linq;
 using WebSocketSharp;
 
+
 public class StreamSDKManager : MonoBehaviourPunCallbacks
 {
    
@@ -178,6 +179,9 @@ public class StreamSDKManager : MonoBehaviourPunCallbacks
         {
             encoder = mainCamera.AddComponent<GameViewEncoder>();
             encoder.RenderCam = mainCamera.GetComponent<Camera>();
+            encoder.StreamFPS = 25;
+            encoder.Quality = 10;
+            encoder.Resolution = new Vector2(1080,720);
             
             audioEncoder = GameObject.FindAnyObjectByType<AudioEncoder>();
             //For some reason, sometimes it doesn't work so assigning it manually in the inspector
@@ -221,13 +225,14 @@ public class StreamSDKManager : MonoBehaviourPunCallbacks
         {
             PUNStreamManager.OnDataByteReadyEvent.AddListener(audioDecoder.Action_ProcessData);
             Debug.Log("Audio Decoder Attached");
+
         }
         else
         {
             Debug.Log("Audio Decoder is null");
         }
-        
 
+        Debug.Log("Audio Streaming Done");
     }
 
 

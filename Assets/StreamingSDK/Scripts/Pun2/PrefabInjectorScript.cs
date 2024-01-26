@@ -68,6 +68,10 @@ public class PrefabInjectorScript : Editor
     {
         GameObject watcherObject = PlacePrefab(GetPrefabPath("StreamWatcherSDK"));
         watcherObject.name = "StreamWatcher";
+        foreach (AudioSource obj in Object.FindObjectsOfType(typeof(AudioSource)))
+        {
+            Debug.Log(obj.name);
+        }
     }
 }
 #endif

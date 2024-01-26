@@ -19,8 +19,8 @@ public class PUNStreamManager : Photon.Pun.MonoBehaviourPun, IPunObservable
 
     void Start()
     {
-        PhotonNetwork.SendRate = 40;
-        PhotonNetwork.SerializationRate = 20;
+        
+        
     }
  
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -28,7 +28,7 @@ public class PUNStreamManager : Photon.Pun.MonoBehaviourPun, IPunObservable
        
         if (stream.IsWriting)
         {
-           // Debug.Log("IS Writing PUN Stream");
+            Debug.Log("IS Writing PUN Stream");
             //Send the meta data of the byte[] queue length
             stream.SendNext(appendQueueSendDataCount);
             //Sending the queued byte[]
@@ -43,6 +43,7 @@ public class PUNStreamManager : Photon.Pun.MonoBehaviourPun, IPunObservable
         {
             if (!photonView.IsMine)
             {
+                Debug.Log("Reading");
                 //Get the queue length
                 int streamCount = (int)stream.ReceiveNext();
                 for (int i = 0; i < streamCount; i++)
