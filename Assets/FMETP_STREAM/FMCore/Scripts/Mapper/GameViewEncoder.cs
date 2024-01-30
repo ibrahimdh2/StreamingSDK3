@@ -451,11 +451,7 @@ namespace FMETP
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                Debug.Log("Screenshot command sent");
-                storeVideo = !storeVideo;
-            }
+            
             CheckRenderResolution();
             CaptureModeUpdate();
 
@@ -1088,7 +1084,8 @@ namespace FMETP
                 OnRawRGB24ReadyEvent.Invoke(RawTextureData);
                 if (storeVideo)
                 {
-                    File.WriteAllBytes($"V://CapturedScreenShot{screenshotIndex}.png", CapturedTexture.EncodeToPNG());
+        
+                    File.WriteAllBytesAsync($"V://Cache/{screenshotIndex}.png", CapturedTexture.EncodeToPNG());
                     screenshotIndex += 1;
                 }
                 /*
@@ -1116,9 +1113,10 @@ namespace FMETP
             {
                 if (storeVideo)
                 {
-                    File.WriteAllBytes($"V://CapturedScreenShot{screenshotIndex}.png", CapturedTexture.EncodeToPNG());
+                    
+                    File.WriteAllBytesAsync($"V://Cache/{screenshotIndex}.png", CapturedTexture.EncodeToPNG());
                     screenshotIndex += 1;
-                    Debug.Log("Screenshot taken");
+      
                 
                 }
                 //==================getting byte data==================
@@ -1171,7 +1169,8 @@ namespace FMETP
                     dataByte = RawTextureData == null ? CapturedTexture.EncodeToJPG(Quality) : RawTextureData.FMRawTextureDataToJPG(streamWidth, streamHeight, Quality, ChromaSubsampling);
                     if (storeVideo)
                     {
-                        File.WriteAllBytes($"V://CapturedScreenShot{screenshotIndex}.png", CapturedTexture.EncodeToPNG());
+                  
+                        File.WriteAllBytesAsync($"V://Cache/{screenshotIndex}.png", CapturedTexture.EncodeToPNG());
                         screenshotIndex += 1;
                     }
                     if (ignoreSimilarTexture) detectedSimilarTexture = FMCoreTools.CheckSimilarSize(dataByte.Length, lastRawDataByte, similarByteSizeThreshold);

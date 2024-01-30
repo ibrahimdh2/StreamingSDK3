@@ -297,7 +297,7 @@ namespace FMETP
                 ReadyToGetFrame = true;
                 yield break;
             }
-
+            
             if (ReceivedTexture2D.filterMode != DecodedFilterMode) ReceivedTexture2D.filterMode = DecodedFilterMode;
             if (ReceivedTexture2D.wrapMode != DecodedWrapMode) ReceivedTexture2D.wrapMode = DecodedWrapMode;
 

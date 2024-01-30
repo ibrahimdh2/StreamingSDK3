@@ -290,6 +290,7 @@ GameObject:
   - component: {fileID: 4384958645545084378}
   - component: {fileID: 5057348223531747348}
   - component: {fileID: 8730066429271922466}
+  - component: {fileID: 1657241762910071138}
   m_Layer: 0
   m_Name: StreamManagerSDK
   m_TagString: Untagged
@@ -348,6 +349,7 @@ MonoBehaviour:
       m_Calls: []
   webcam: 1
   webCamObject: {fileID: 4147650096507132549}
+  micStreaming: 0
 --- !u!114 &8730066429271922466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,6 +373,21 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &1657241762910071138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7984813758907467676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f75ab3c9a226ae428d0cdaf48dbd067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioRenderers: []
+  recordTime: 0
+  audioListener: {fileID: 0}
 --- !u!1 &7989391862070441053
 GameObject:
   m_ObjectHideFlags: 0

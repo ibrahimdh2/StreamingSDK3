@@ -9,6 +9,7 @@ using UnityEngine.Events;
 using System.Linq;
 using WebSocketSharp;
 
+
 public class StreamSDKManager : MonoBehaviourPunCallbacks
 {
    
@@ -176,20 +177,31 @@ public class StreamSDKManager : MonoBehaviourPunCallbacks
 
         if (mainCamera != null)
         {
-            encoder = mainCamera.AddComponent<GameViewEncoder>();
-            encoder.RenderCam = mainCamera.GetComponent<Camera>();
-            
-            audioEncoder = GameObject.FindAnyObjectByType<AudioEncoder>();
-            //For some reason, sometimes it doesn't work so assigning it manually in the inspector
-            encoder.OnDataByteReadyEvent.AddListener(PUNStreamManager.Action_SendData);
-            if (audioStreaming && audioEncoder != null)
+            if (!mainCamera.TryGetComponent<GameViewEncoder>(out GameViewEncoder _encoderr))
             {
-                audioEncoder.OnDataByteReadyEvent.AddListener(PUNStreamManager.Action_SendData);
-                Debug.Log($"Audio encoder event added");
+                encoder = mainCamera.AddComponent<GameViewEncoder>();
+                Debug.Log("Adding GameViewEncoder");
             }
-            else
+            if (encoder != null)
             {
-                Debug.Log($"Audio encoder is null");
+                Debug.Log("Configuring Gameview encoder");
+                encoder.RenderCam = mainCamera.GetComponent<Camera>();
+                encoder.StreamFPS = 25;
+                encoder.Quality = 10;
+                encoder.Resolution = new Vector2(1080, 720);
+
+                audioEncoder = GameObject.FindAnyObjectByType<AudioEncoder>();
+                //For some reason, sometimes it doesn't work so assigning it manually in the inspector
+                encoder.OnDataByteReadyEvent.AddListener(PUNStreamManager.Action_SendData);
+                if (audioStreaming && audioEncoder != null)
+                {
+                    audioEncoder.OnDataByteReadyEvent.AddListener(PUNStreamManager.Action_SendData);
+                    Debug.Log($"Audio encoder event added");
+                }
+                else
+                {
+                    Debug.Log($"Audio encoder is null");
+                } 
             }
 
       
@@ -221,13 +233,14 @@ public class StreamSDKManager : MonoBehaviourPunCallbacks
         {
             PUNStreamManager.OnDataByteReadyEvent.AddListener(audioDecoder.Action_ProcessData);
             Debug.Log("Audio Decoder Attached");
+
         }
         else
         {
             Debug.Log("Audio Decoder is null");
         }
-        
 
+        Debug.Log("Audio Streaming Done");
     }
 
 
