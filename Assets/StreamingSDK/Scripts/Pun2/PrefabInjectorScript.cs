@@ -73,7 +73,7 @@ public class PrefabInjectorScript : Editor
         streamerObject.name = "StreamManager";
         streamerObject.GetComponent<StreamSDKManager>().mainCamera = Camera.main.gameObject;
         videoRecorder = streamerObject.GetComponent<VideoRecorder>();
-        GetAllAudioSourceObjects();
+        //GetAllAudioSourceObjects();
 
 
 
@@ -114,6 +114,7 @@ public class PrefabInjectorScript : Editor
             {
                 renderer = _audioSource.gameObject.AddComponent<AudioRenderer>();
                 videoRecorder.audioRenderers.Add(renderer);
+                Debug.Log($"Adding Audio Renderer on {renderer.gameObject.name}");
                 
             }
             //Debug.Log("parent has audio source adding it");
@@ -139,6 +140,7 @@ public class PrefabInjectorScript : Editor
                         renderer = __audioSource.gameObject.AddComponent<AudioRenderer>();
                        
                         videoRecorder.audioRenderers.Add(renderer);
+                        Debug.Log($"Adding Audio Renderer on {renderer.gameObject.name}");
                     }
                 }
                 if (childObject.childCount > 0)

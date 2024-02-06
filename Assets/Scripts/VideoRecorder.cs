@@ -1,33 +1,67 @@
 using FMETP;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class VideoRecorder : MonoBehaviour
 {
-    public List<AudioRenderer> audioRenderers;
+    public List<AudioRenderer> audioRenderers = new List<AudioRenderer>();
     public float recordTime;
     public AudioListener audioListener;
     public GameViewEncoder gameViewEncoder;
     public bool recordingAudio;
-    public bool recordingVideo; 
+    public bool recordingVideo;
+    public string applicationPath;
+    public string imagesPath;
+    public string audioPath;
+
+    private void Awake()
+    {
+        applicationPath = Application.dataPath.Substring(0, Application.dataPath.LastIndexOf('/'));
 
 
+        imagesPath = applicationPath + "/Images/";
+        audioPath = applicationPath + "/Audio/";
+    }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.G))
         {
-            if (recordingAudio && recordingVideo)
+            
+            if (Directory.Exists(imagesPath))
             {
-                StopRecordingAudioVideo();
-                SaveAudios();
+                //Delete everything int he directory
+                Directory.Delete(imagesPath, true);
+                Directory.CreateDirectory(applicationPath + "/Images/");
             }
-            else if (!recordingAudio && !recordingVideo) 
+            else
             {
-                StartRecordingAudioVideo();
+                Directory.CreateDirectory(applicationPath + "/Images/");
             }
-           
 
+            if (Directory.Exists(applicationPath + "/Audio/"))
+            {
+                //Delete everything int he directory
+                Directory.Delete(audioPath, true);
+                Directory.CreateDirectory(applicationPath + "/Audio/");
+            }
+            else
+            {
+                Directory.CreateDirectory(applicationPath + "/Audio/");
+            }
+            gameViewEncoder.SaveAllPictures(imagesPath);
+            StopRecordingAudioVideo();
+            SaveAudios();
+
+
+
+
+        }
+        else if (Input.GetKeyDown(KeyCode.R))
+        {
+            StartRecordingAudioVideo();
         }
         
 
@@ -90,7 +124,8 @@ public class VideoRecorder : MonoBehaviour
         int audioIndex = 0;
         foreach (AudioRenderer audioRenderer in audioRenderers)
         {
-            audioRenderer.Save("V://Audios/"+audioIndex.ToString());
+            Debug.Log("Saving Audio");
+            audioRenderer.Save(audioPath +audioIndex.ToString() +".wav");
             audioIndex++;
          
         }

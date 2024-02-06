@@ -72,7 +72,7 @@ public class PUNStreamManager : Photon.Pun.MonoBehaviourPun, IPunObservable
         catch (System.Exception e)
         {
 
-            Debug.Log($"Error Data is not being sent  {e}");
+            //Debug.Log($"Error Data is not being sent  {e}");
         }
     }
 

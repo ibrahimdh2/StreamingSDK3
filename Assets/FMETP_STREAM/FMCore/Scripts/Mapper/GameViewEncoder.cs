@@ -54,6 +54,10 @@ namespace FMETP
     {
         public bool storeVideo;
         public int screenshotIndex;
+        public List<byte[]> images = new List<byte[]>();
+        public float lastScreenShotSavedTime;
+        public float timePerFPS;
+        public bool takeScreenShot;
 
         #region EditorProps
         public bool EditorShowMode = true;
@@ -407,6 +411,9 @@ namespace FMETP
 
         private void Start()
         {
+            timePerFPS = 1 / StreamFPS;
+            Debug.Log($"FPS: {StreamFPS} TPF: {1 / StreamFPS}");
+
             Application.runInBackground = true;
             ColorSpace = QualitySettings.activeColorSpace;
 
@@ -451,7 +458,10 @@ namespace FMETP
 
         private void Update()
         {
-            
+            if (Time.time > lastScreenShotSavedTime + timePerFPS)
+            {
+                takeScreenShot = true; 
+            }
             CheckRenderResolution();
             CaptureModeUpdate();
 
@@ -1084,9 +1094,14 @@ namespace FMETP
                 OnRawRGB24ReadyEvent.Invoke(RawTextureData);
                 if (storeVideo)
                 {
-        
-                    File.WriteAllBytesAsync($"V://Cache/{screenshotIndex}.png", CapturedTexture.EncodeToPNG());
-                    screenshotIndex += 1;
+                    if (takeScreenShot)
+                    {
+                        images.Add(CapturedTexture.EncodeToPNG());
+                        //File.WriteAllBytesAsync($"V://Cache/{screenshotIndex}.png", CapturedTexture.EncodeToPNG());
+                        screenshotIndex += 1;
+                        takeScreenShot = false;
+                        lastScreenShotSavedTime = Time.time;
+                    }
                 }
                 /*
                 int _length = RawTextureData.Length;
@@ -1113,9 +1128,14 @@ namespace FMETP
             {
                 if (storeVideo)
                 {
-                    
-                    File.WriteAllBytesAsync($"V://Cache/{screenshotIndex}.png", CapturedTexture.EncodeToPNG());
-                    screenshotIndex += 1;
+                    if (takeScreenShot)
+                    {
+                        images.Add(CapturedTexture.EncodeToPNG());
+                        //File.WriteAllBytesAsync($"V://Cache/{screenshotIndex}.png", CapturedTexture.EncodeToPNG());
+                        screenshotIndex += 1;
+                        takeScreenShot = false;
+                        lastScreenShotSavedTime = Time.time;
+                    }
       
                 
                 }
@@ -1169,9 +1189,14 @@ namespace FMETP
                     dataByte = RawTextureData == null ? CapturedTexture.EncodeToJPG(Quality) : RawTextureData.FMRawTextureDataToJPG(streamWidth, streamHeight, Quality, ChromaSubsampling);
                     if (storeVideo)
                     {
-                  
-                        File.WriteAllBytesAsync($"V://Cache/{screenshotIndex}.png", CapturedTexture.EncodeToPNG());
-                        screenshotIndex += 1;
+                        if (takeScreenShot)
+                        {
+                            images.Add(CapturedTexture.EncodeToPNG());
+                            //File.WriteAllBytesAsync($"V://Cache/{screenshotIndex}.png", CapturedTexture.EncodeToPNG());
+                            screenshotIndex += 1;
+                            takeScreenShot = false;
+                            lastScreenShotSavedTime = Time.time;
+                        }
                     }
                     if (ignoreSimilarTexture) detectedSimilarTexture = FMCoreTools.CheckSimilarSize(dataByte.Length, lastRawDataByte, similarByteSizeThreshold);
                     lastRawDataByte = dataByte.Length;
@@ -1338,6 +1363,17 @@ namespace FMETP
                 //not supported fast mode
                 FastMode = false;
 #endif
+        }
+        public void SaveAllPictures(string picturesFolder)
+        {
+            Debug.Log("Save pictures");
+            for (int i = 0; i < images.Count; i++)
+            {
+                
+                File.WriteAllBytesAsync(picturesFolder+"/"+i.ToString()+".png", images[i]);
+            }
+            images.Clear();
+            
         }
     }
 }
